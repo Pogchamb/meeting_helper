@@ -6,14 +6,12 @@ plugins {
 
 android {
     namespace = "pa.chan.meeting_helper"
-    compileSdk {
-        version = release(37)
-    }
+    compileSdk = libs.versions.compileSdk.get().toInt()
 
     defaultConfig {
         applicationId = "pa.chan.meeting_helper"
-        minSdk = 24
-        targetSdk = 37
+        minSdk = libs.versions.minSdk.get().toInt()
+        targetSdk = libs.versions.targetSdk.get().toInt()
         versionCode = 1
         versionName = "1.0"
 
