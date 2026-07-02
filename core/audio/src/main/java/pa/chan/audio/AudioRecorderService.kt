@@ -30,6 +30,8 @@ class AudioRecorderService : Service() {
 
         val notification = NotificationCompat.Builder(this, channelId)
             .setSmallIcon(android.R.drawable.ic_btn_speak_now)
+            .setContentTitle("Запись")
+            .setContentText("Идет запись совещания!")
             .build()
 
         startForeground(1, notification)
@@ -45,5 +47,6 @@ class AudioRecorderService : Service() {
         startId: Int
     ): Int {
         return super.onStartCommand(intent, flags, startId)
+
     }
 }
