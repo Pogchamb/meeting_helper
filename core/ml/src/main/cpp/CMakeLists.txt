@@ -1,38 +1,40 @@
-
-# For more information about using CMake with Android Studio, read the
-# documentation: https://d.android.com/studio/projects/add-native-code.html.
-# For more examples on how to use CMake, see https://github.com/android/ndk-samples.
-
-# Sets the minimum CMake version required for this project.
 cmake_minimum_required(VERSION 3.22.1)
+project("whisper_core_ml")
 
-# Declares the project name. The project name can be accessed via ${ PROJECT_NAME},
-# Since this is the top level CMakeLists.txt, the project name is also accessible
-# with ${CMAKE_PROJECT_NAME} (both CMake variables are in-sync within the top level
-# build script scope).
-project("ml")
+# 1. Собираем ядро Whisper
+add_library(
+        whisper_static
+        STATIC
+        whisper/whisper.cpp
+        whisper/ggml.c
+)
 
-# Creates and names a library, sets it as either STATIC
-# or SHARED, and provides the relative paths to its source code.
-# You can define multiple libraries, and CMake builds them for you.
-# Gradle automatically packages shared libraries with your APK.
-#
-# In this top level CMakeLists.txt, ${CMAKE_PROJECT_NAME} is used to define
-# the target library name; in the sub-module's CMakeLists.txt, ${PROJECT_NAME}
-# is preferred for the same purpose.
-#
-# In order to load a library into your app from Java/Kotlin, you must call
-# System.loadLibrary() and pass the name of the library defined here;
-# for GameActivity/NativeActivity derived applications, the same library name must be
-# used in the AndroidManifest.xml file.
-add_library(${CMAKE_PROJECT_NAME} SHARED
-    # List C/C++ source files with relative paths to this CMakeLists.txt.
-    ml.cpp)
+target_include_directories(whisper_static PUBLIC
+        ${CMAKE_CURRENT_SOURCE_DIR}/whisper
+)
 
-# Specifies libraries CMake should link to your target library. You
-# can link libraries from various origins, such as libraries defined in this
-# build script, prebuilt third-party libraries, or Android system libraries.
-target_link_libraries(${CMAKE_PROJECT_NAME}
-    # List libraries link to the target library
-    android
-    log)
+target_compile_definitions(whisper_static
+        PRIVATE
+        GGML_USE_CPU=1
+        WHISPER_NO_FILE_IO=0
+)
+
+if (ANDROID_ABI STREQUAL "arm64-v8a")
+    target_compile_definitions(whisper_static PRIVATE GGML_USE_ARM_NEON=1)
+endif ()
+
+# 2. Создаем JNI-обертку
+add_library(
+        whisper_native
+        SHARED
+        whisper_jni.cpp
+)
+
+# 3. ПРИВЯЗЫВАЕМ ВСЁ В ОДНОМ МЕСТЕ К ПРАВИЛЬНОЙ ЦЕЛИ (whisper_native)
+target_link_libraries(whisper_native
+        whisper_static  # Ядро whisper
+        log             # Логи
+        dl              # Для многопоточности ggml
+        android         # Базовые функции NDK
+        c++_shared      # Стандартная библиотека C++
+)
