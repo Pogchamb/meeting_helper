@@ -1,4 +1,7 @@
 [versions]
+minSdk = "26"
+targetSdk = "37"
+compileSdk = "37"
 agp = "9.2.1"
 coreKtx = "1.19.0"
 junit = "4.13.2"
@@ -12,7 +15,7 @@ jetbrainsKotlinJvm = "2.4.0"
 kotlinVersion = "2.4.0"
 
 coroutines = "1.11.0"
-hilt = "2.59.2"
+hilt = "2.60"
 room_version = "2.8.4"
 retrofit = "3.0.0"
 gson = "2.14.0"
