@@ -1,17 +1,23 @@
 package pa.chan.audio
 
+import android.Manifest
 import android.app.NotificationChannel
 import android.app.NotificationManager
 import android.app.Service
 import android.content.Context
 import android.content.Intent
 import android.os.IBinder
+import androidx.annotation.RequiresPermission
 import androidx.core.app.NotificationCompat
 
 class AudioRecorderService : Service() {
+    private var audioRecorder: AudioRecorder? = null
+
+
     override fun onBind(intent: Intent?): IBinder? {
         TODO("Not yet implemented")
     }
+
 
 
     override fun onCreate() {
@@ -39,14 +45,21 @@ class AudioRecorderService : Service() {
 
     override fun onDestroy() {
         super.onDestroy()
+        audioRecorder?.stopRecording()
+        stopForeground(STOP_FOREGROUND_REMOVE)
     }
 
+    @RequiresPermission(Manifest.permission.RECORD_AUDIO)
     override fun onStartCommand(
         intent: Intent?,
         flags: Int,
         startId: Int
     ): Int {
-        return super.onStartCommand(intent, flags, startId)
+        audioRecorder = AudioRecorder()
+
+        audioRecorder?.startRecording()
+
+        return START_NOT_STICKY
 
     }
 }
