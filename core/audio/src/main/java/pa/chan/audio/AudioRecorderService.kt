@@ -45,6 +45,8 @@ class AudioRecorderService : Service() {
 
     override fun onDestroy() {
         super.onDestroy()
+        audioRecorder?.stopRecording()
+        stopForeground(STOP_FOREGROUND_REMOVE)
     }
 
     @RequiresPermission(Manifest.permission.RECORD_AUDIO)
