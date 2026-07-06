@@ -39,6 +39,7 @@ android {
 
 dependencies {
     implementation(project(":core:ml"))
+    implementation(project(":core:audio"))
 
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.appcompat)
