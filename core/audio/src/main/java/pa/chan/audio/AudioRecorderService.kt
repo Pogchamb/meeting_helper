@@ -4,20 +4,18 @@ import android.Manifest
 import android.app.NotificationChannel
 import android.app.NotificationManager
 import android.app.Service
-import android.content.Context
 import android.content.Intent
 import android.os.IBinder
 import androidx.annotation.RequiresPermission
 import androidx.core.app.NotificationCompat
 
-class AudioRecorderService : Service() {
+class AudioRecorderService() : Service() {
     private var audioRecorder: AudioRecorder? = null
 
 
     override fun onBind(intent: Intent?): IBinder? {
         TODO("Not yet implemented")
     }
-
 
 
     override fun onCreate() {
@@ -28,7 +26,7 @@ class AudioRecorderService : Service() {
 
 
         val notificationManager =
-            getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
+            getSystemService(NOTIFICATION_SERVICE) as NotificationManager
         val notificationChannel = NotificationChannel(channelId, channelName, importance)
         notificationChannel.description = "notify audio record"
         notificationChannel.setShowBadge(false)
@@ -55,7 +53,7 @@ class AudioRecorderService : Service() {
         flags: Int,
         startId: Int
     ): Int {
-        audioRecorder = AudioRecorder()
+        audioRecorder = AudioRecorder(this)
 
         audioRecorder?.startRecording()
 

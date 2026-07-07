@@ -1,13 +1,26 @@
 package pa.chan.audio
 
 import android.Manifest
+import android.content.Context
 import android.media.AudioFormat
 import android.media.AudioRecord
 import android.media.MediaRecorder
 import androidx.annotation.RequiresPermission
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.currentCoroutineContext
+import kotlinx.coroutines.isActive
+import kotlinx.coroutines.launch
+import java.io.File
+import java.io.FileOutputStream
+import java.io.OutputStream
 
-internal class AudioRecorder {
+internal class AudioRecorder(private val context: Context) {
+
+    private var recordingJob: Job? = null
     private var audioRecord: AudioRecord? = null
+    private var audioRecordOutputStream: OutputStream? = null
 
     companion object {
         const val SAMPLE_RATE = 16000
@@ -20,6 +33,8 @@ internal class AudioRecorder {
         if (audioRecord != null) return
 
         val minBufferSize = AudioRecord.getMinBufferSize(SAMPLE_RATE, CHANNEL_CONFIG, AUDIO_FORMAT)
+        val recordFile = File(context.filesDir, "record.pcm")
+        audioRecordOutputStream = FileOutputStream(recordFile)
 
         audioRecord = AudioRecord(
             MediaRecorder.AudioSource.MIC,
@@ -30,6 +45,18 @@ internal class AudioRecorder {
         )
 
         audioRecord?.startRecording()
+
+        recordingJob = CoroutineScope(Dispatchers.IO).launch {
+            writeAudioDataToDisk()
+        }
+    }
+
+    suspend fun writeAudioDataToDisk() {
+        while (currentCoroutineContext().isActive) {
+            val audioData = ByteArray(SAMPLE_RATE * 2)
+            audioRecord?.read(audioData, 0, audioData.size)
+            audioRecordOutputStream?.write(audioData)
+        }
     }
 
     fun readAudioChunk(seconds: Int): FloatArray {
@@ -55,9 +82,14 @@ internal class AudioRecorder {
     fun stopRecording() {
         if (audioRecord == null) return
 
+        recordingJob?.cancel()
+        recordingJob = null
+
         audioRecord?.stop()
         audioRecord?.release()
         audioRecord = null
+
+        audioRecordOutputStream?.close()
     }
 
 
