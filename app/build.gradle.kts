@@ -40,6 +40,8 @@ android {
 dependencies {
     implementation(project(":core:ml"))
     implementation(project(":core:audio"))
+    implementation(project(":core:database"))
+
 
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.appcompat)
@@ -52,6 +54,13 @@ dependencies {
 
     implementation(libs.hilt.android)
     ksp(libs.hilt.android.compiler)
+    implementation(libs.androidx.hilt.work)
 
     implementation(libs.kotlinx.coroutines.android)
+
+    implementation(libs.work.runtime.ktx)
+}
+
+configurations.all {
+    exclude(group = "com.intellij", module = "annotations")
 }

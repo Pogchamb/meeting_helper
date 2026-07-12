@@ -6,11 +6,30 @@ import android.app.NotificationManager
 import android.app.Service
 import android.content.Intent
 import android.os.IBinder
+import android.util.Log
 import androidx.annotation.RequiresPermission
 import androidx.core.app.NotificationCompat
+import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.SupervisorJob
+import kotlinx.coroutines.cancel
+import kotlinx.coroutines.launch
+import pa.chan.domain.repository.RecordRepository
+import javax.inject.Inject
 
-class AudioRecorderService() : Service() {
+@AndroidEntryPoint
+class AudioRecorderService : Service() {
+    @Inject
+    lateinit var recordRepository: RecordRepository
     private var audioRecorder: AudioRecorder? = null
+
+    private val serviceScope = CoroutineScope(Dispatchers.IO + SupervisorJob())
+
+    companion object {
+        const val ACTION_START = "START"
+        const val ACTION_STOP = "STOP"
+    }
 
 
     override fun onBind(intent: Intent?): IBinder? {
@@ -23,7 +42,7 @@ class AudioRecorderService() : Service() {
         val importance = NotificationManager.IMPORTANCE_LOW
         val channelId = "AudioRecordNotifyID"
         val channelName = "AudioRecordNotify"
-
+        audioRecorder = AudioRecorder(this)
 
         val notificationManager =
             getSystemService(NOTIFICATION_SERVICE) as NotificationManager
@@ -44,6 +63,9 @@ class AudioRecorderService() : Service() {
     override fun onDestroy() {
         super.onDestroy()
         audioRecorder?.stopRecording()
+
+        serviceScope.cancel()
+
         stopForeground(STOP_FOREGROUND_REMOVE)
     }
 
@@ -53,11 +75,25 @@ class AudioRecorderService() : Service() {
         flags: Int,
         startId: Int
     ): Int {
-        audioRecorder = AudioRecorder(this)
 
-        audioRecorder?.startRecording()
 
+        when (intent?.action) {
+            ACTION_START -> {
+                audioRecorder?.startRecording()
+
+            }
+
+            ACTION_STOP -> {
+                serviceScope.launch {
+                    val path = audioRecorder?.stopRecording()
+                    path?.let {
+                        val id = recordRepository.savePendingRecord(it)
+                        Log.d("AudioRecorderService", "Saved to DB with ID: $id")
+                    }
+                    stopSelf()
+                }
+            }
+        }
         return START_NOT_STICKY
-
     }
 }

@@ -10,8 +10,10 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import com.google.android.material.button.MaterialButton
+import dagger.hilt.android.AndroidEntryPoint
 import pa.chan.audio.AudioRecorderService
 
+@AndroidEntryPoint
 class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -33,14 +35,18 @@ class MainActivity : AppCompatActivity() {
                         currentState = RecordState.RECORD
                         btnStartStop.text = getString(R.string.stop)
 
-                        val intent = Intent(this, AudioRecorderService::class.java)
+                        val intent = Intent(this, AudioRecorderService::class.java).apply {
+                            action = AudioRecorderService.ACTION_START
+                        }
                         startForegroundService(intent)
                     } else if (currentState == RecordState.RECORD) {
                         currentState = RecordState.STOP_RECORD
                         btnStartStop.text = getString(R.string.start)
 
-                        val intent = Intent(this, AudioRecorderService::class.java)
-                        stopService(intent)
+                        val intent = Intent(this, AudioRecorderService::class.java).apply {
+                            action = AudioRecorderService.ACTION_STOP
+                        }
+                        startForegroundService(intent)
                     }
                 } else {
                     Toast.makeText(this, R.string.audio_permission_toast, Toast.LENGTH_SHORT).show()
@@ -50,24 +56,6 @@ class MainActivity : AppCompatActivity() {
         btnStartStop.setOnClickListener {
             launcher.launch(Manifest.permission.RECORD_AUDIO)
         }
-
-
-
-//        try {
-//            Log.d("WHISPER_TEST", "ИНИЦИАЛИЗИРУЕМ WhisperEngine")
-//            val engine = WhisperEngine()
-//
-//            engine.initModel(
-//                assetManager = this.assets,
-//                modelPath = "models/ggml-small-q5_1.bin",
-//                cpuCores = Runtime.getRuntime().availableProcessors()
-//            )
-//            Log.d("Whisper_TEST", "МОДЕЛЬ УСПЕШНО ЗАГРУЖЕНА БЕЗ РАСПАКОВКИ НА ДИСК!")
-//            engine.freeModel()
-//            Log.d("Whisper_TEST", "Память очишена")
-//        } catch (e: Exception) {
-//            Log.e("WHISPER_TEST", "Error: ${e.message}")
-//        }
 
     }
 }

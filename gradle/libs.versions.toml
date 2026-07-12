@@ -1,4 +1,5 @@
 [versions]
+
 minSdk = "26"
 targetSdk = "37"
 compileSdk = "37"
@@ -15,7 +16,8 @@ jetbrainsKotlinJvm = "2.4.0"
 kotlinVersion = "2.4.0"
 
 coroutines = "1.11.0"
-hilt = "2.60"
+hilt = "2.60.1"
+hiltWork = "1.4.0"
 room_version = "2.8.4"
 retrofit = "3.0.0"
 gson = "2.14.0"
@@ -26,6 +28,7 @@ securityCrypto = "1.1.0"
 [libraries]
 # базовые
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
+
 junit = { group = "junit", name = "junit", version.ref = "junit" }
 androidx-junit = { group = "androidx.test.ext", name = "junit", version.ref = "junitVersion" }
 androidx-espresso-core = { group = "androidx.test.espresso", name = "espresso-core", version.ref = "espressoCore" }
@@ -41,6 +44,7 @@ kotlinx-coroutines-android = { module = "org.jetbrains.kotlinx:kotlinx-coroutine
 # Hilt (DI)
 hilt-android = { module = "com.google.dagger:hilt-android", version.ref = "hilt" }
 hilt-android-compiler = { module = "com.google.dagger:hilt-android-compiler", version.ref = "hilt" }
+androidx-hilt-work = { module = "androidx.hilt:hilt-work", version.ref = "hiltWork" }
 
 # Room
 room-compiler = { module = "androidx.room:room-compiler", version.ref = "room_version" }

@@ -22,6 +22,8 @@ internal class AudioRecorder(private val context: Context) {
     private var audioRecord: AudioRecord? = null
     private var audioRecordOutputStream: OutputStream? = null
 
+    private var recordFile: String? = null
+
     companion object {
         const val SAMPLE_RATE = 16000
         const val CHANNEL_CONFIG = AudioFormat.CHANNEL_IN_MONO
@@ -33,7 +35,7 @@ internal class AudioRecorder(private val context: Context) {
         if (audioRecord != null) return
 
         val minBufferSize = AudioRecord.getMinBufferSize(SAMPLE_RATE, CHANNEL_CONFIG, AUDIO_FORMAT)
-        val recordFile = File(context.filesDir, "record.pcm")
+        recordFile = File(context.filesDir, "record_${System.currentTimeMillis()}.pcm").absolutePath
         audioRecordOutputStream = FileOutputStream(recordFile)
 
         audioRecord = AudioRecord(
@@ -79,8 +81,8 @@ internal class AudioRecorder(private val context: Context) {
 
     }
 
-    fun stopRecording() {
-        if (audioRecord == null) return
+    fun stopRecording(): String? {
+        if (audioRecord == null) return null
 
         recordingJob?.cancel()
         recordingJob = null
@@ -90,6 +92,8 @@ internal class AudioRecorder(private val context: Context) {
         audioRecord = null
 
         audioRecordOutputStream?.close()
+
+        return recordFile
     }
 
 
