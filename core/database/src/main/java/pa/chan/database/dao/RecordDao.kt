@@ -13,7 +13,7 @@ import pa.chan.database.entity.RecordSessionEntity
 interface RecordDao {
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun insertRecordSession(vararg recordSessionEntity: RecordSessionEntity)
+    suspend fun insertRecordSession(recordSessionEntity: RecordSessionEntity): Long
 
     @Update
     suspend fun updateRecordSession(vararg recordSessionEntity: RecordSessionEntity)

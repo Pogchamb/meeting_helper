@@ -14,3 +14,5 @@
 .cxx
 local.properties
 app/src/main/assets/models/*.bin
+Instructions.md
+Technical Design Document (TDD v3.md
