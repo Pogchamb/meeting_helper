@@ -24,6 +24,7 @@ dependencies {
     implementation(project(":core:domain"))
     implementation(project(":core:database"))
     implementation(project(":core:ml"))
+    implementation(project(":core:audio"))
 
     implementation(libs.androidx.appcompat)
     implementation(libs.androidx.core.ktx)
@@ -35,6 +36,12 @@ dependencies {
     implementation(libs.hilt.android)
     implementation(libs.androidx.hilt.work)
     ksp(libs.hilt.android.compiler)
+    ksp(libs.androidx.hilt.compiler)
 
     implementation(libs.work.runtime.ktx)
+
+    implementation(libs.kotlinx.coroutines.core)
+    implementation(libs.kotlinx.coroutines.android)
+
+
 }

@@ -65,7 +65,7 @@ Java_pa_chan_ml_WhisperEngine_nativeTranscribe(JNIEnv *env, jobject thiz, jlong 
 
     struct whisper_full_params params = whisper_full_default_params(WHISPER_SAMPLING_GREEDY);
 
-    int threads = std::min(4, cpu_cores - 1);
+    int threads = std::min(cpu_cores, 8);
     if (threads < 1) threads = 1;
     params.n_threads = threads;
 
@@ -73,6 +73,8 @@ Java_pa_chan_ml_WhisperEngine_nativeTranscribe(JNIEnv *env, jobject thiz, jlong 
     params.print_special = false;
     params.translate = false;
     params.language = "ru";
+    params.print_timestamps = false;
+    params.print_realtime = false;
 
     int result = whisper_full(ctx, params, audio_ptr, audio_len);
 

@@ -16,12 +16,17 @@ import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.cancel
 import kotlinx.coroutines.launch
 import pa.chan.domain.repository.RecordRepository
+import pa.chan.domain.schedulers.TranscriptionScheduler
 import javax.inject.Inject
 
 @AndroidEntryPoint
 class AudioRecorderService : Service() {
     @Inject
     lateinit var recordRepository: RecordRepository
+
+    @Inject
+    lateinit var transcriptionScheduler: TranscriptionScheduler
+
     private var audioRecorder: AudioRecorder? = null
 
     private val serviceScope = CoroutineScope(Dispatchers.IO + SupervisorJob())
@@ -89,6 +94,8 @@ class AudioRecorderService : Service() {
                     path?.let {
                         val id = recordRepository.savePendingRecord(it)
                         Log.d("AudioRecorderService", "Saved to DB with ID: $id")
+
+                        transcriptionScheduler.scheduleTranscription(id)
                     }
                     stopSelf()
                 }
