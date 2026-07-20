@@ -2,19 +2,36 @@ package pa.chan.meeting_helper
 
 import android.Manifest
 import android.content.Intent
+import android.os.Build
 import android.os.Bundle
 import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.repeatOnLifecycle
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.button.MaterialButton
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.launch
 import pa.chan.audio.AudioRecorderService
+import pa.chan.domain.repository.RecordRepository
+import javax.inject.Inject
 
 @AndroidEntryPoint
 class MainActivity : AppCompatActivity() {
+    @Inject
+    lateinit var recordRepository: RecordRepository
+
+    private val adapter = RecordsAdapter()
+
+
+    @RequiresApi(Build.VERSION_CODES.TIRAMISU)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
@@ -25,12 +42,28 @@ class MainActivity : AppCompatActivity() {
             insets
         }
 
+        val rvRecords = findViewById<RecyclerView>(R.id.textRV)
+        rvRecords.layoutManager = LinearLayoutManager(this)
+        rvRecords.adapter = adapter
+
+        lifecycleScope.launch {
+            repeatOnLifecycle(Lifecycle.State.STARTED) {
+                recordRepository.getSessions().collect { sessions ->
+                    adapter.submitList(sessions)
+                }
+            }
+        }
+
+
         val btnStartStop = findViewById<MaterialButton>(R.id.btn_start_stop)
         var currentState = RecordState.STOP_RECORD
 
         val launcher =
-            registerForActivityResult(ActivityResultContracts.RequestPermission()) { isGranted ->
-                if (isGranted) {
+            registerForActivityResult(ActivityResultContracts.RequestMultiplePermissions()) { permissions ->
+                val audioGranted = permissions[Manifest.permission.RECORD_AUDIO] ?: false
+                val notificationGranted =
+                    permissions[Manifest.permission.POST_NOTIFICATIONS] ?: false
+                if (audioGranted && notificationGranted) {
                     if (currentState == RecordState.STOP_RECORD) {
                         currentState = RecordState.RECORD
                         btnStartStop.text = getString(R.string.stop)
@@ -53,8 +86,15 @@ class MainActivity : AppCompatActivity() {
                 }
             }
 
+
+
         btnStartStop.setOnClickListener {
-            launcher.launch(Manifest.permission.RECORD_AUDIO)
+            val permissionsToRequest =
+                arrayOf(Manifest.permission.RECORD_AUDIO, Manifest.permission.POST_NOTIFICATIONS)
+            launcher.launch(
+                permissionsToRequest
+            )
+
         }
 
     }

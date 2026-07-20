@@ -11,6 +11,7 @@ class Converters {
             RecordSessionStatus.IN_PROGRESS -> "IN_PROGRESS"
             RecordSessionStatus.COMPLETED -> "COMPLETED"
             RecordSessionStatus.PENDING -> "PENDING"
+            RecordSessionStatus.ERROR -> "ERROR"
         }
     }
 
@@ -20,6 +21,7 @@ class Converters {
             "IN_PROGRESS" -> RecordSessionStatus.IN_PROGRESS
             "COMPLETED" -> RecordSessionStatus.COMPLETED
             "PENDING" -> RecordSessionStatus.PENDING
+            "Error" -> RecordSessionStatus.ERROR
             else -> null
         }
     }

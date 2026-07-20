@@ -1,6 +1,7 @@
 [versions]
 
 minSdk = "26"
+recyclerview = "1.4.0"
 targetSdk = "37"
 compileSdk = "37"
 agp = "9.2.1"
@@ -12,23 +13,27 @@ appcompat = "1.7.1"
 material = "1.14.0"
 activity = "1.13.0"
 constraintlayout = "2.2.1"
-jetbrainsKotlinJvm = "2.4.0"
-kotlinVersion = "2.4.0"
+jetbrainsKotlinJvm = "2.4.10"
+kotlinVersion = "2.4.10"
 
 coroutines = "1.11.0"
 hilt = "2.60.1"
 hiltWork = "1.4.0"
+hiltWorkCompile = "1.4.0"
 room_version = "2.8.4"
 retrofit = "3.0.0"
 gson = "2.14.0"
 okhttp = "5.4.0"
 workManager = "2.11.2"
 securityCrypto = "1.1.0"
+lifecycleProcess = "2.11.0"
 
 [libraries]
 # базовые
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
 
+androidx-hilt-compiler = { module = "androidx.hilt:hilt-compiler", version.ref = "hiltWork" }
+androidx-recyclerview = { module = "androidx.recyclerview:recyclerview", version.ref = "recyclerview" }
 junit = { group = "junit", name = "junit", version.ref = "junit" }
 androidx-junit = { group = "androidx.test.ext", name = "junit", version.ref = "junitVersion" }
 androidx-espresso-core = { group = "androidx.test.espresso", name = "espresso-core", version.ref = "espressoCore" }
@@ -46,6 +51,7 @@ hilt-android = { module = "com.google.dagger:hilt-android", version.ref = "hilt"
 hilt-android-compiler = { module = "com.google.dagger:hilt-android-compiler", version.ref = "hilt" }
 androidx-hilt-work = { module = "androidx.hilt:hilt-work", version.ref = "hiltWork" }
 
+
 # Room
 room-compiler = { module = "androidx.room:room-compiler", version.ref = "room_version" }
 room-ktx = { module = "androidx.room:room-ktx", version.ref = "room_version" }
@@ -62,6 +68,7 @@ work-runtime-ktx = { module = "androidx.work:work-runtime-ktx", version.ref = "w
 
 # Security
 security-crypto = { module = "androidx.security:security-crypto", version.ref = "securityCrypto" }
+androidx-lifecycle-process = { group = "androidx.lifecycle", name = "lifecycle-process", version.ref = "lifecycleProcess" }
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }

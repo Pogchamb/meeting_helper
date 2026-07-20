@@ -12,6 +12,7 @@ import kotlinx.coroutines.Job
 import kotlinx.coroutines.currentCoroutineContext
 import kotlinx.coroutines.isActive
 import kotlinx.coroutines.launch
+import pa.chan.domain.configs.AudioConfig
 import java.io.File
 import java.io.FileOutputStream
 import java.io.OutputStream
@@ -25,7 +26,7 @@ internal class AudioRecorder(private val context: Context) {
     private var recordFile: String? = null
 
     companion object {
-        const val SAMPLE_RATE = 16000
+        const val SAMPLE_RATE = AudioConfig.SAMPLE_RATE
         const val CHANNEL_CONFIG = AudioFormat.CHANNEL_IN_MONO
         const val AUDIO_FORMAT = AudioFormat.ENCODING_PCM_16BIT
     }
@@ -72,7 +73,7 @@ internal class AudioRecorder(private val context: Context) {
 
         for (i in 0 until samplesToRead) {
             val shortVal =
-                (audioData[i + 1].toInt() and 0xFF shl 8) or (audioData[i].toInt() and 0xFF)
+                ((audioData[i + 1].toInt() and 0xFF) shl 8) or (audioData[i].toInt() and 0xFF)
 
             floatBuffer[i] = shortVal.toFloat() / 32768.0f
         }

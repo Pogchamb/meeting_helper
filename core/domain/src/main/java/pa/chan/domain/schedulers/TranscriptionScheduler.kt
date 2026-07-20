@@ -2,6 +2,6 @@ package pa.chan.domain.schedulers
 
 interface TranscriptionScheduler {
 
-    suspend fun scheduleTranscription(sessionId: Long)
+    fun scheduleTranscription(sessionId: Long)
 
 }
