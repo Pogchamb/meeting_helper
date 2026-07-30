@@ -65,10 +65,10 @@ Java_pa_chan_ml_WhisperEngine_nativeTranscribe(JNIEnv *env, jobject thiz, jlong 
 
     struct whisper_full_params params = whisper_full_default_params(WHISPER_SAMPLING_GREEDY);
 
-    int threads = std::min(cpu_cores, 8);
+    int threads = 4;
     if (threads < 1) threads = 1;
     params.n_threads = threads;
-
+    params.audio_ctx = 768;
     params.print_progress = false;
     params.print_special = false;
     params.translate = false;

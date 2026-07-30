@@ -1,6 +1,12 @@
 cmake_minimum_required(VERSION 3.22.1)
 project("whisper_core_ml")
 
+# -O3: Агрессивная оптимизация циклов
+# -ffast-math: Разрешаем процессору быстрее считать математику (без потери качества звука)
+# -march=armv8.2-a+fp16: Заставляем использовать аппаратные инструкции FP16 (КРИТИЧНО для Dimensity 1080)
+set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -O3 -ffast-math -march=armv8.2-a+fp16")
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -O3 -ffast-math -march=armv8.2-a+fp16")
+
 # 1. Собираем ядро Whisper
 add_library(
         whisper_static

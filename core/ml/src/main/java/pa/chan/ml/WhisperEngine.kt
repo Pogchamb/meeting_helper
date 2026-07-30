@@ -67,7 +67,7 @@ class WhisperEngine @Inject constructor(@ApplicationContext context: Context): T
 
     override suspend fun transcribe(audioChunk: FloatArray): String {
         val cores = Runtime.getRuntime().availableProcessors().coerceAtMost(6)
-        val modelPath = "models/ggml-base-q5_1.bin"
+        val modelPath = "models/ggml-small-q5_1.bin"
 
         mutex.withLock {
             if (!isInitialized()) {
