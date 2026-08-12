@@ -32,6 +32,7 @@ lifecycleProcess = "2.11.0"
 moshi = "1.15.2"
 
 
+
 [libraries]
 # базовые
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }

@@ -4,7 +4,7 @@ import dagger.Binds
 import dagger.Module
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
-import pa.chan.domain.Transcriber
+import pa.chan.domain.contracts.Transcriber
 import pa.chan.ml.WhisperEngine
 
 

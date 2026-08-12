@@ -9,6 +9,8 @@ interface RecordRepository {
 
     suspend fun updateStatus(id: Long, status: RecordSessionStatus)
 
+    suspend fun updateSummary(id: Long, summary: String)
+
     suspend fun getSessionById(id: Long): RecordSessionModel?
 
     suspend fun updateTextAndStatus(id: Long, status: RecordSessionStatus, text: String)

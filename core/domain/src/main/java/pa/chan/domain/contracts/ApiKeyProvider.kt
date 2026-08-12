@@ -1,4 +1,4 @@
-package pa.chan.domain
+package pa.chan.domain.contracts
 
 interface ApiKeyProvider {
     fun getApiKey(): String?

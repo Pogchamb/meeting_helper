@@ -3,7 +3,6 @@ package pa.chan.database.entity
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 import pa.chan.domain.enums.RecordSessionStatus
-import pa.chan.domain.models.RecordSessionModel
 import java.util.Date
 
 @Entity
@@ -13,15 +12,8 @@ data class RecordSessionEntity(
     val pathToFile: String,
     val status: RecordSessionStatus,
     val text: String?,
-    val date: Date
+    val date: Date,
+    val summary: String? = null
 )
 
-fun RecordSessionEntity.toModel(): RecordSessionModel {
-    return RecordSessionModel(
-        this.id,
-        this.pathToFile,
-        this.status,
-        this.text,
-        this.date
-    )
-}
+

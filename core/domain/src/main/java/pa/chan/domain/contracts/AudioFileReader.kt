@@ -1,4 +1,4 @@
-package pa.chan.domain
+package pa.chan.domain.contracts
 
 import kotlinx.coroutines.flow.Flow
 import pa.chan.domain.configs.AudioConfig

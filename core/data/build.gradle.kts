@@ -25,6 +25,7 @@ android {
 dependencies {
     implementation(project(":core:domain"))
     implementation(project(":core:database"))
+    implementation(project(":core:network"))
 
     implementation(libs.androidx.appcompat)
     implementation(libs.androidx.core.ktx)
@@ -32,6 +33,9 @@ dependencies {
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.espresso.core)
     androidTestImplementation(libs.androidx.junit)
+
+    implementation(libs.retrofit)
+    implementation(libs.logging.interceptor)
 
     implementation(libs.hilt.android)
     ksp(libs.hilt.android.compiler)

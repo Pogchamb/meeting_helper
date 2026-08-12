@@ -3,7 +3,7 @@ package pa.chan.network
 import okhttp3.Interceptor
 import okhttp3.Response
 import okio.IOException
-import pa.chan.domain.ApiKeyProvider
+import pa.chan.domain.contracts.ApiKeyProvider
 import javax.inject.Inject
 import kotlin.jvm.Throws
 

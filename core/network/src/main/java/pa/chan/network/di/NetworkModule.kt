@@ -11,7 +11,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
-import pa.chan.domain.ApiKeyProvider
+import pa.chan.domain.contracts.ApiKeyProvider
 import pa.chan.network.ApiKeyProviderImpl
 import pa.chan.network.AuthTokenInterceptor
 import pa.chan.network.OpenAIApi

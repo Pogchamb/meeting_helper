@@ -7,15 +7,14 @@ import androidx.work.OneTimeWorkRequest
 import androidx.work.OutOfQuotaPolicy
 import androidx.work.WorkManager
 import androidx.work.workDataOf
-import pa.chan.domain.schedulers.TranscriptionScheduler
+import pa.chan.domain.contracts.TranscriptionScheduler
 import pa.chan.work.TranscriptionWorker
 import java.util.concurrent.TimeUnit
 import javax.inject.Inject
 
 class TranscriptionSchedulerImpl @Inject constructor(
     private val workManager: WorkManager
-) :
-    TranscriptionScheduler {
+) : TranscriptionScheduler {
     override fun scheduleTranscription(sessionId: Long) {
 
         val data: Data = workDataOf("SESSION_ID" to sessionId)

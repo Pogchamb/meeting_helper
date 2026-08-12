@@ -1,4 +1,4 @@
-package pa.chan.domain.schedulers
+package pa.chan.domain.contracts
 
 interface TranscriptionScheduler {
 

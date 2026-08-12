@@ -24,11 +24,23 @@ class App : Application(), androidx.work.Configuration.Provider {
     override fun onCreate() {
         super.onCreate()
         ProcessLifecycleOwner.get().lifecycle.addObserver(lifecycleObserver)
-        val channel = NotificationChannel(
-            "transcription_channel",
-            "Транскрибация",
+
+        val transcribeChannelId = "transcription_channel"
+        val transcribeChannelName = "Transcription"
+        val transcribeChannel = NotificationChannel(
+            transcribeChannelId,
+            transcribeChannelName,
             NotificationManager.IMPORTANCE_LOW
         )
-        getSystemService(NotificationManager::class.java).createNotificationChannel(channel)
+
+        val summaryChannelId = "summary_channel"
+        val summaryChannelName = "Summary"
+        val summaryChannel = NotificationChannel(
+            summaryChannelId,
+            summaryChannelName,
+            NotificationManager.IMPORTANCE_LOW
+        )
+
+        getSystemService(NotificationManager::class.java).createNotificationChannels(listOf(transcribeChannel, summaryChannel))
     }
 }

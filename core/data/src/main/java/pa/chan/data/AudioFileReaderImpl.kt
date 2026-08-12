@@ -5,7 +5,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.flowOn
-import pa.chan.domain.AudioFileReader
+import pa.chan.domain.contracts.AudioFileReader
 import pa.chan.domain.configs.AudioConfig.SAMPLE_RATE
 import java.io.DataInputStream
 import java.io.File

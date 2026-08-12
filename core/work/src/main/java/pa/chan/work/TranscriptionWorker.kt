@@ -11,8 +11,8 @@ import androidx.work.ForegroundInfo
 import androidx.work.WorkerParameters
 import dagger.assisted.Assisted
 import dagger.assisted.AssistedInject
-import pa.chan.domain.AudioFileReader
-import pa.chan.domain.Transcriber
+import pa.chan.domain.contracts.AudioFileReader
+import pa.chan.domain.contracts.Transcriber
 import pa.chan.domain.enums.RecordSessionStatus
 import pa.chan.domain.repository.RecordRepository
 

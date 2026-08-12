@@ -9,7 +9,7 @@ import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
-import pa.chan.domain.ApiKeyProvider
+import pa.chan.domain.contracts.ApiKeyProvider
 import pa.chan.network.di.ApplicationScope
 import javax.inject.Inject
 import javax.inject.Singleton
