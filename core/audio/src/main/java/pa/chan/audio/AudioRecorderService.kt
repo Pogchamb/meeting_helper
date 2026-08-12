@@ -16,7 +16,7 @@ import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.cancel
 import kotlinx.coroutines.launch
 import pa.chan.domain.repository.RecordRepository
-import pa.chan.domain.schedulers.TranscriptionScheduler
+import pa.chan.domain.contracts.TranscriptionScheduler
 import javax.inject.Inject
 
 @AndroidEntryPoint

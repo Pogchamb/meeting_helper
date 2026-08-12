@@ -24,9 +24,13 @@ interface RecordDao {
     @Query("UPDATE RecordSessionEntity SET status = :status, text = :text WHERE id = :id")
     suspend fun updateTextAndStatus(id: Long, status: RecordSessionStatus, text: String)
 
+    @Query("UPDATE RecordSessionEntity SET summary = :summary WHERE id = :id")
+    suspend fun updateSummary(id: Long, summary: String)
     @Delete
     suspend fun deleteRecordSession(vararg recordSessionEntity: RecordSessionEntity)
 
     @Query("SELECT * FROM RecordSessionEntity ORDER BY date DESC")
     fun selectAllRecordSession(): Flow<List<RecordSessionEntity>>
+
+
 }

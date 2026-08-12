@@ -8,5 +8,6 @@ data class RecordSessionModel(
     val pathToFile: String,
     val status: RecordSessionStatus,
     val text: String?,
-    val date: Date
+    val date: Date,
+    val summary: String? = null
 )

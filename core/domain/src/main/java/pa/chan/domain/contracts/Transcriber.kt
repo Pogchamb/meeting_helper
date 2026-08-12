@@ -1,4 +1,4 @@
-package pa.chan.domain
+package pa.chan.domain.contracts
 
 interface Transcriber {
 
