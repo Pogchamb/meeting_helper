@@ -6,24 +6,13 @@ import java.util.Date
 
 class Converters {
     @TypeConverter
-    fun fromStatusEnum(value: RecordSessionStatus): String? {
-        return when (value) {
-            RecordSessionStatus.IN_PROGRESS -> "IN_PROGRESS"
-            RecordSessionStatus.COMPLETED -> "COMPLETED"
-            RecordSessionStatus.PENDING -> "PENDING"
-            RecordSessionStatus.ERROR -> "ERROR"
-        }
+    fun fromStatusEnum(value: RecordSessionStatus): String {
+        return value.name
     }
 
     @TypeConverter
-    fun stringToStatusEnum(value: String): RecordSessionStatus? {
-        return when (value) {
-            "IN_PROGRESS" -> RecordSessionStatus.IN_PROGRESS
-            "COMPLETED" -> RecordSessionStatus.COMPLETED
-            "PENDING" -> RecordSessionStatus.PENDING
-            "Error" -> RecordSessionStatus.ERROR
-            else -> null
-        }
+    fun stringToStatusEnum(value: String): RecordSessionStatus {
+        return RecordSessionStatus.valueOf(value)
     }
 
     @TypeConverter
